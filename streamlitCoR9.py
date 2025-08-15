@@ -3,6 +3,10 @@ import time
 import random
 from PIL import Image
 import io
+import numpy as np
+
+# Import the YOLO library
+from ultralytics import YOLO
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -70,6 +74,19 @@ with open("style.css", "w") as f:
     f.write(css_content)
 local_css("style.css")
 
+# --- Model Loading with Caching ---
+# Caching the model ensures it's only loaded once, which is crucial for
+# Streamlit's architecture to prevent re-loading on every user interaction.
+@st.cache_resource
+def load_yolo_model():
+    # This downloads the YOLOv8n model and loads it.
+    # Replace "yolov8n.pt" with your custom trained model path if needed.
+    model = YOLO("yolov8n.pt")
+    return model
+
+# Load the model once at the start of the app.
+yolo_model = load_yolo_model()
+
 # --- Sidebar Navigation ---
 st.sidebar.title("🌽 CoR9")
 page_selection = st.sidebar.radio(
@@ -82,7 +99,6 @@ st.sidebar.markdown("---")
 st.sidebar.info("System Status: **AI Model Ready**")
 
 # --- Main Page Content ---
-
 if page_selection == "🏠 Home":
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>🌽 CoR9 Corn Reflection Prediction</h1>", unsafe_allow_html=True)
     
@@ -110,7 +126,6 @@ if page_selection == "🏠 Home":
                 st.image(image_data, caption="Corn Image Preview", use_column_width=True)
 
         elif mode == "🎥 Webcam":
-            # st.info("Start your webcam and capture an image.")
             img_file_buffer = st.camera_input("Take a picture")
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
@@ -119,21 +134,63 @@ if page_selection == "🏠 Home":
     with col2:
         st.subheader("📤 Output")
         
-        # This is a placeholder for the prediction logic
-        def predict_reflection(image):
-            # Simulate a delay for processing
-            with st.spinner("Analyzing corn reflection patterns..."):
-                time.sleep(3)
+        # --- Prediction Function using the YOLO model ---
+        def predict_reflection(image_data):
+            # Convert the image data from bytes to a format YOLO can use (e.g., NumPy array)
+            image = Image.open(io.BytesIO(image_data))
             
-            # Mock prediction results based on your HTML code
-            predictions = [
-                {'type': 'High Quality', 'confidence': 94.5, 'description': 'Excellent surface reflection, optimal moisture content', 'color': 'green'},
-                {'type': 'Medium Quality', 'confidence': 87.2, 'description': 'Good reflection quality, slightly elevated moisture', 'color': 'yellow'},
-                {'type': 'Premium Grade', 'confidence': 98.1, 'description': 'Outstanding reflection characteristics, perfect maturity', 'color': 'green'},
-                {'type': 'Standard Quality', 'confidence': 78.6, 'description': 'Acceptable reflection, normal moisture levels', 'color': 'orange'}
-            ]
-            return random.choice(predictions)
+            with st.spinner("Analyzing corn reflection patterns..."):
+                # Perform inference with the YOLO model
+                results = yolo_model(image)
+                
+            # Process the results from YOLO.
+            predictions = results[0].boxes
+            
+            if len(predictions) > 0:
+                # Assuming your model is trained to classify corn quality
+                first_prediction = predictions[0]
+                confidence = first_prediction.conf.item() * 100
+                class_id = int(first_prediction.cls.item())
+                
+                # Map the class ID to a meaningful label
+                # You must define your own class names list based on your model's training
+                class_names = {
+                    0: 'High Quality',
+                    1: 'Medium Quality',
+                    2: 'Low Quality',
+                }
+                
+                quality = class_names.get(class_id, "Unknown Quality")
 
+                if quality == 'High Quality':
+                    return {
+                        'type': 'High Quality', 
+                        'confidence': confidence, 
+                        'description': 'Excellent surface reflection, optimal moisture content', 
+                        'color': 'green'
+                    }
+                elif quality == 'Medium Quality':
+                    return {
+                        'type': 'Medium Quality', 
+                        'confidence': confidence, 
+                        'description': 'Good reflection quality, slightly elevated moisture', 
+                        'color': 'yellow'
+                    }
+                else:
+                    return {
+                        'type': 'Standard Quality', 
+                        'confidence': confidence, 
+                        'description': 'Acceptable reflection, normal moisture levels', 
+                        'color': 'orange'
+                    }
+            else:
+                return {
+                    'type': 'No Corn Detected', 
+                    'confidence': 0, 
+                    'description': 'Please upload a clear image of corn.', 
+                    'color': 'gray'
+                }
+        
         if image_data:
             if st.button("🔮 Predict Corn Reflection"):
                 result = predict_reflection(image_data)
@@ -141,7 +198,8 @@ if page_selection == "🏠 Home":
                 color_map = {
                     'green': 'rgba(102, 255, 102, 0.9)',
                     'yellow': 'rgba(255, 255, 102, 0.9)',
-                    'orange': 'rgba(255, 178, 102, 0.9)'
+                    'orange': 'rgba(255, 178, 102, 0.9)',
+                    'gray': 'rgba(200, 200, 200, 0.9)'
                 }
                 
                 st.markdown(f"""
@@ -155,7 +213,7 @@ if page_selection == "🏠 Home":
                     <h3 style="color: #333; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">🌽 Prediction Results</h3>
                     <div style="color: #333; font-size: 1.25rem; font-weight: bold;">{result['type']}</div>
                     <div style="color: #555; font-size: 1rem; margin-top: 5px;">{result['description']}</div>
-                    <div style="color: #777; font-size: 0.875rem; margin-top: 10px;">Confidence: {result['confidence']}%</div>
+                    <div style="color: #777; font-size: 0.875rem; margin-top: 10px;">Confidence: {result['confidence']:.2f}%</div>
                     <div style="color: #555; font-size: 0.75rem; margin-top: 15px;">Analysis completed successfully</div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -177,8 +235,10 @@ if page_selection == "🏠 Home":
             </div>
             """, unsafe_allow_html=True)
 
-# --- Details Page ---
+# --- Details Page and About Page remain the same ---
+
 elif page_selection == "📊 Details":
+    # ... your existing code for the Details page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>📊 System Details</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -186,11 +246,11 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>🤖 AI Model Information</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Model:** CoR9 Deep Learning Network
-        - **Architecture:** Convolutional Neural Network (CNN)
+        - **Model:** YOLOv8n (or your custom model)
+        - **Architecture:** YOLO (You Only Look Once)
         - **Training Data:** 10,000+ corn reflection images
-        - **Accuracy:** 95.7%
-        - **Processing Time:** ~2-3 seconds per image
+        - **Accuracy:** 95.7% (This is a placeholder, use your model's actual accuracy)
+        - **Processing Time:** ~1-2 seconds per image (Depends on hardware)
         """)
         st.markdown("</div>", unsafe_allow_html=True)
     
@@ -231,6 +291,7 @@ elif page_selection == "📊 Details":
 
 # --- About Page ---
 elif page_selection == "ℹ️ About":
+    # ... your existing code for the About page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>ℹ️ About CoR9</h1>", unsafe_allow_html=True)
     
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
@@ -258,7 +319,7 @@ elif page_selection == "ℹ️ About":
     st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
     st.write("""
     - **Frontend:** Streamlit, Custom CSS
-    - **AI/ML:** Placeholder for a future ML model (e.g., TensorFlow, PyTorch)
+    - **AI/ML:** YOLO (You Only Look Once), Computer Vision, Deep Learning
     """)
     st.markdown("</div>", unsafe_allow_html=True)
     
