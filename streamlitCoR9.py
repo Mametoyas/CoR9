@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import random
+import matplotlib.font_manager as fm
 from PIL import Image
 import io
 import numpy as np
