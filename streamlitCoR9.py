@@ -242,7 +242,7 @@ if page_selection == "🏠 Home":
                         image = Image.open(io.BytesIO(image_data))
                         
                         # Perform inference with the YOLO model
-                        results = yolo_model.predict(source=image, conf=0.7)
+                        results = yolo_model.predict(source=image, conf=0.8)
                         
                         plot_yolo_result_image_and_analyze(image_data, results)
 
