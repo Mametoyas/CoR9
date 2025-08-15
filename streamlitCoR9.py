@@ -43,10 +43,11 @@ css_content = """
 
     /* Glassmorphism effect for main containers and sidebar */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
-        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
+        backgroung-image: url(CoR9_BG.jpg);
+        # background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.7);
+        # border: 1px solid rgba(255, 255, 255, 0.7);
         border-radius: 16px; /* Slightly more rounded corners */
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -56,9 +57,9 @@ css_content = """
     }
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
         backgroung-image: url(CoR9_BG.jpg);
-        background-color: rgba(255, 255, 255, 0.25);
+        # background-color: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(90px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        # border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 10px;
         padding: 10px;
     }
