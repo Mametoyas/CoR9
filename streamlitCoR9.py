@@ -234,7 +234,7 @@ if page_selection == "🏠 Home":
             )
             if uploaded_file is not None:
                 image_data = uploaded_file.getvalue()
-                st.image(image_data, caption="Corn Image Preview", use_column_width=True)
+                st.image(image_data, caption="Corn Image Preview", use_container_width=True)
 
         elif mode == "🎥 Webcam":
             img_file_buffer = st.camera_input("Take a picture")
