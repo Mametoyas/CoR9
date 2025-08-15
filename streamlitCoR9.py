@@ -246,8 +246,8 @@ if page_selection == "🏠 Home":
                     st.image(image_data, caption="Corn Image Preview", use_container_width=True)
 
         elif mode == "🎥 Webcam":
-            img_file_buffer = st.camera_input("Take a picture")
             st.markdown('<div class="space2"></div>', unsafe_allow_html=True)
+            img_file_buffer = st.camera_input("Take a picture")
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
                 # st.image(image_data, caption="Captured Image", use_column_width=True)
