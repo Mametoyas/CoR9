@@ -105,7 +105,7 @@ css_content = """
     margin-top: 112px;  /* adjust as needed */
     }
     .space2 {
-    margin-top: 17px;  /* adjust as needed */
+    margin-top: 22px;  /* adjust as needed */
     }
 """
 with open("style.css", "w") as f:
