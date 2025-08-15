@@ -118,7 +118,6 @@ def plot_yolo_result_image_and_analyze(image_data, results):
         0: 'Clookya',
         6: 'Rakhaw'
     }
-
     # Convert image data to a format cv2 can read
     file_bytes = np.asarray(bytearray(image_data), dtype=np.uint8)
     img = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
@@ -129,24 +128,10 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     # Extract YOLO results
     labels = results[0].boxes.xywhn.cpu().numpy()  # Normalized xywh
     classes = results[0].boxes.cls.cpu().numpy().astype(int)
-
     # Count class instances
     class_counts = Counter(classes)
     total_instances = sum(class_counts.values())
 
-    # --- Display analysis in a Streamlit container ---
-    # New container with a white background for the analysis text
-
-    cols = st.columns(2)
-    
-    for i, cls in enumerate(sorted(class_counts.keys())):
-        count = class_counts[cls]
-        percent = (count / total_instances) * 100
-        
-        # Using columns to display counts nicely
-        with cols[i % 2]:
-            st.info(f"**{class_names[cls]}:** {count} instances ({percent:.2f}%)")
-    st.markdown("</div>", unsafe_allow_html=True) # Close the container
     
     # Color map per class
     unique_classes = np.unique(classes)
@@ -191,6 +176,15 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
     st.write(f"**Total Instances Detected:** {total_instances}")
+    cols = st.columns(2)
+    for i, cls in enumerate(sorted(class_counts.keys())):
+        count = class_counts[cls]
+        percent = (count / total_instances) * 100
+        
+        # Using columns to display counts nicely
+        with cols[i % 2]:
+            st.info(f"**{class_names[cls]}:** {count} instances ({percent:.2f}%)")
+    st.markdown("</div>", unsafe_allow_html=True) # Close the container
 
 
 # --- Main Page Content ---
