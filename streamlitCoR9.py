@@ -30,14 +30,11 @@ def local_css(file_name):
 
 # Create a temporary CSS file to apply custom styles from your HTML
 css_content = """
-    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
 
     /* Main body and app container */
     body {
-      background: radial-gradient(circle, rgba(200, 200, 200, 0.5), rgba(100, 100, 100, 0.8)), url("https://github.com/Mametoyas/CoR9/blob/main/CoR9_BG.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
+        background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
+        background-attachment: fixed;
     }
     .stApp {
         background: none;
