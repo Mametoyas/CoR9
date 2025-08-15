@@ -180,7 +180,7 @@ def plot_yolo_result_image_and_analyze(image_data, results):
             f"{class_names[cls]}",
             color=color,
             fontsize=8,
-            fontproperties=font_prop
+            fontproperties=font_prop,
             ha='center',
             bbox=dict(facecolor='white', edgecolor='none', alpha=0.6, boxstyle='round,pad=0.2')
         )
