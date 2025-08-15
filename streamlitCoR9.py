@@ -261,23 +261,23 @@ if page_selection == "🏠 Home":
 
                     except Exception as e:
                         st.error(f"An error occurred during prediction: {e}")
-        else:
-            st.markdown("""
-            <div style="
-                border: 2px dashed #ccc;
-                border-radius: 12px;
-                padding: 40px;
-                text-align: center;
-                background: #f9f9f9;
-                color: #888;
-            ">
-                <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
-                <div>Prediction results will appear here</div>
-                <div style="font-size: 0.75rem; margin-top: 0.5rem;">
-                    Upload an image or use the webcam to see results.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+        # else:
+        #     st.markdown("""
+        #     <div style="
+        #         border: 2px dashed #ccc;
+        #         border-radius: 12px;
+        #         padding: 40px;
+        #         text-align: center;
+        #         background: #f9f9f9;
+        #         color: #888;
+        #     ">
+        #         <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
+        #         <div>Prediction results will appear here</div>
+        #         <div style="font-size: 0.75rem; margin-top: 0.5rem;">
+        #             Upload an image or use the webcam to see results.
+        #         </div>
+        #     </div>
+        #     """, unsafe_allow_html=True)
 
 # --- Details Page and About Page remain the same ---
 elif page_selection == "📊 Details":
