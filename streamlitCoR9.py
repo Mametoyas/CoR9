@@ -220,8 +220,6 @@ def plot_yolo_result_image_and_analyze(image_data, results):
 # --- Main Page Content ---
 if page_selection == "🏠 Home":
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>🌽 CoR9 Corn Reflection Prediction</h1>", unsafe_allow_html=True)
-    
-    st.markdown("<h2 style='text-align:center; color:#fff;'>Select Analysis Mode</h2>", unsafe_allow_html=True)
     mode = st.radio(
         "Choose a mode:",
         ("📷 Image Upload", "🎥 Webcam"),
