@@ -288,10 +288,9 @@ elif page_selection == "📊 Details":
         st.markdown("<h3 style='font-weight:bold;'>🌽 Corn Reflection Analysis</h3>", unsafe_allow_html=True)
         st.write("""
         - **Detection Types:**
-            - Surface reflection quality
-            - Kernel moisture content
-            - Maturity level assessment
-            - Quality grading
+            - Object Bounding Boxes detection
+        - **Classes:**
+            ซัง, ราขาว, เมล็ดคลุกยา, เมล็ดดี, เมล็ดเน่า, เมล็ดน้ำผึ้ง, แมลงทำลาย
         """)
         st.markdown("</div>", unsafe_allow_html=True)
     
