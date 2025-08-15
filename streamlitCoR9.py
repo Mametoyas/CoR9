@@ -369,15 +369,13 @@ elif page_selection == "ℹ️ About":
     st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
     st.write("""
     - **Frontend:** Streamlit, Custom CSS
-    - **AI/ML:** YOLO (You Only Look Once), Computer Vision, Deep Learning
+    - **AI:** YOLO (You Only Look Once), Computer Vision, Deep Learning
     """)
     st.markdown("</div>", unsafe_allow_html=True)
     
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>📞 Contact & Support</h3>", unsafe_allow_html=True)
-    st.write("""
-    For technical support or questions about CoR9, please contact our development team.
-    We're continuously improving the system and welcome your feedback.
-    """)
+    st.write("""GitHub: https://github.com/Mametoyas/CoR9""")
+    st.write("""Email: Chakkaphan.m@kkumail.com""")
     st.markdown("</div>", unsafe_allow_html=True)
 
