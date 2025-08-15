@@ -227,7 +227,7 @@ if page_selection == "🏠 Home":
             img_file_buffer = st.camera_input("Take a picture")
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
-                st.image(image_data, caption="Captured Image", use_column_width=True)
+                # st.image(image_data, caption="Captured Image", use_column_width=True)
 
     with col2:
         st.subheader("📤 Output")
