@@ -352,27 +352,29 @@ elif page_selection == "ℹ️ About":
     อีกทั้งยังสามารถลดความผิดพลาดที่มักเกิดจากการประเมินด้วยสายตาหรือการทำงานของบุคลากร 
     ซึ่งเป็นปัญหาที่พบได้บ่อยในภาคการผลิต และการวิจัยด้านเกษตรกรรม 
     """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='font-weight:bold;'>🚀 Key Features</h3>", unsafe_allow_html=True)
-    st.markdown("""
-    - ✓ Real-time corn quality assessment
-    - ✓ Dual mode operation (Image & Video)
-    - ✓ High accuracy prediction (95.7%)
-    - ✓ User-friendly web interface
-    - ✓ Webcam integration for live analysis
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
-    st.write("""
-    - **Frontend:** Streamlit, Custom CSS
-    - **AI:** YOLO (You Only Look Once), Computer Vision, Deep Learning
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("</div>", unsafe_allow_html=True)
     
+        st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-weight:bold;'>🚀 Key Features</h3>", unsafe_allow_html=True)
+        st.markdown("""
+        - ✓ Real-time corn quality assessment
+        - ✓ Dual mode operation (Image & Video)
+        - ✓ High accuracy prediction (95.7%)
+        - ✓ User-friendly web interface
+        - ✓ Webcam integration for live analysis
+        """)
+    with col2:
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+        st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
+        st.write("""
+        - **Frontend:** Streamlit, Custom CSS
+        - **AI:** YOLO (You Only Look Once), Computer Vision, Deep Learning
+        """)
+    st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>📞 Contact & Support</h3>", unsafe_allow_html=True)
     st.write("""GitHub: https://github.com/Mametoyas/CoR9""")
