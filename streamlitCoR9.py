@@ -30,7 +30,7 @@ def local_css(file_name):
 # Create a temporary CSS file to apply custom styles from your HTML
 css_content = """
     body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #d8b4fe 0%, #e0cffc  100%);
         background-attachment: fixed;
     }
     .stApp {
