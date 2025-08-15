@@ -194,7 +194,7 @@ def plot_yolo_result_image_and_analyze(image_data, results):
         )
     
     # Use st.pyplot() to display the Matplotlib figure
-    st.write()
+    st.write("")
     st.pyplot(fig)
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
@@ -221,7 +221,7 @@ if page_selection == "🏠 Home":
         horizontal=True
     )
     
-    col1, col3 ,col2= st.columns([5,5,10])
+    col1, col2= st.columns(2)
 
     with col1:
         st.subheader("📤 Input")
