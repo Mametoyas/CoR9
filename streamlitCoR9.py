@@ -226,14 +226,10 @@ if page_selection == "🏠 Home":
                         image = Image.open(io.BytesIO(image_data))
                         
                         # Perform inference with the YOLO model
-                        results = yolo_model.predict(source=image, conf=0.25)
+                        results = yolo_model.predict(source=image)
+                        plot_yolo_result_image_and_analyze(image_data, results)
                         
-                        if results[0].boxes.cls.numel() > 0:
-                            plot_yolo_result_image_and_analyze(image_data, results)
-                        else:
-                            st.warning("No corn defects or qualities were detected in the image.")
-                    except Exception as e:
-                        st.error(f"An error occurred during prediction: {e}")
+
         else:
             st.markdown("""
             <div style="
