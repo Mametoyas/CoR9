@@ -31,39 +31,32 @@ def local_css(file_name):
 css_content = """
     /* Main body and app container */
     body {
-      background: linear-gradient(
-          135deg,
-          rgba(188, 212, 237, 0.7) 0%,
-          rgba(232, 228, 255, 0.7) 100%
+        background: linear-gradient(
+            135deg,
+            rgba(188, 212, 237, 0.7) 0%,
+            rgba(232, 228, 255, 0.7) 100%
         ),
         url("CoR9_BG.jpg") no-repeat center center fixed;
-      background-size: cover;
+        background-size: cover;
     }
     .stApp {
         background: none;
     }
 
     /* Glassmorphism effect for main containers and sidebar */
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
-        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
+    /* Combined rules for all main elements */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content, .st-emotion-cache-10o5j50 {
+        background-color: rgba(255, 255, 255, 0.5); /* Unified transparency for a consistent look */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: 16px; /* Slightly more rounded corners */
+        border-radius: 16px; 
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
-    .stApp {
-        background: none;
-    }
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        background-color: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-        padding: 10px;
-    }
-    .stButton>button {
+    
+    /* Buttons */
+    .stButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
@@ -72,29 +65,48 @@ css_content = """
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
-    .stButton>button:hover {
+    .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
-    .stTextInput>div>div>input, .stFileUploader>div>button, .stSelectbox>div>div {
+
+    /* Input fields (file uploader, text input) */
+    .stTextInput > div > div > input, .stFileUploader > div > button, .stSelectbox > div > div {
         border-radius: 12px;
         border: 2px solid #667eea;
         background: rgba(255, 255, 255, 0.8);
     }
-    .st-emotion-cache-10o5j50 { /* Main content glass effect */
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 12px;
-        padding: 40px;
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+    /* Info boxes and report containers */
+    .st-emotion-cache-14j989e {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-left: 5px solid #667eea;
+        color: #333;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
-    .sidebar .sidebar-content {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
+
+    /* Headers */
+    h1, h2, h3 {
+        color: #333;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
+    
+    /* Analysis container with white background */
+    .analysis-container {
+        background-color: #ffffff;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Main content container */
     .reportview-container .main .block-container{
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+"""
 """
 with open("style.css", "w") as f:
     f.write(css_content)
