@@ -167,7 +167,7 @@ def plot_yolo_result_image_and_analyze(image_data, results):
         y0 = y - h // 2
 
         # Draw box
-        rect = patches.Rectangle((x0, y0), w, h, linewidth=1, edgecolor=color, facecolor='none')
+        rect = patches.Rectangle((x0, y0), w, h, linewidth=1.5, edgecolor=color, facecolor='none')
         ax.add_patch(rect)
 
         # Draw label
