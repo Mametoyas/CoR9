@@ -154,7 +154,6 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     # Plotting
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.imshow(imgs)
-    ax.set_title("Detection Results")
     ax.axis('off')
 
     for i in range(len(classes)):
