@@ -101,9 +101,12 @@ css_content = """
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
-    .space {
+    .space1 {
     margin-top: 112px;  /* adjust as needed */
-}
+    }
+    .space2 {
+    margin-top: 17px;  /* adjust as needed */
+    }
 """
 with open("style.css", "w") as f:
     f.write(css_content)
@@ -198,7 +201,9 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     
     # Use st.pyplot() to display the Matplotlib figure
     if mode != "🎥 Webcam":
-        st.markdown('<div class="space"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="space1"></div>', unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="space2"></div>', unsafe_allow_html=True)
     st.pyplot(fig)
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
