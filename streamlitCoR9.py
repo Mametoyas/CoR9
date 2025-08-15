@@ -4,6 +4,12 @@ import random
 from PIL import Image
 import io
 import numpy as np
+import cv2 as cv
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from collections import Counter
+import warnings
+warnings.filterwarnings("ignore")
 
 # Import the YOLO library
 from ultralytics import YOLO
@@ -23,16 +29,31 @@ def local_css(file_name):
 
 # Create a temporary CSS file to apply custom styles from your HTML
 css_content = """
+    /* Main body and app container */
     body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
         background-attachment: fixed;
     }
     .stApp {
         background: none;
     }
+
+    /* Glassmorphism effect for main containers and sidebar */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
+        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 16px; /* Slightly more rounded corners */
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    .stApp {
+        background: none;
+    }
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        background-color: rgba(255, 255, 255, 0.25); 
-        backdrop-filter: blur(10px); 
+        background-color: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 10px;
         padding: 10px;
@@ -75,13 +96,9 @@ with open("style.css", "w") as f:
 local_css("style.css")
 
 # --- Model Loading with Caching ---
-# Caching the model ensures it's only loaded once, which is crucial for
-# Streamlit's architecture to prevent re-loading on every user interaction.
 @st.cache_resource
 def load_yolo_model():
-    # This downloads the YOLOv8n model and loads it.
-    # Replace "yolov8n.pt" with your custom trained model path if needed.
-    model = YOLO("yolov8n.pt")
+    model = YOLO("best.pt")
     return model
 
 # Load the model once at the start of the app.
@@ -97,6 +114,87 @@ page_selection = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.info("System Status: **AI Model Ready**")
+
+# --- Function to plot results and display analysis ---
+def plot_yolo_result_image_and_analyze(image_data, results):
+    # Class names (YOLO ID → Name)
+    class_names = {
+        1: 'Good',
+        5: 'Sung',
+        4: 'Insect',
+        3: 'Bad',
+        2: 'Honey',
+        0: 'Clookya',
+        6: 'Rakhaw'
+    }
+    # Convert image data to a format cv2 can read
+    file_bytes = np.asarray(bytearray(image_data), dtype=np.uint8)
+    img = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
+    
+    imgs = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+    height, width = imgs.shape[:2]
+
+    # Extract YOLO results
+    labels = results[0].boxes.xywhn.cpu().numpy()  # Normalized xywh
+    classes = results[0].boxes.cls.cpu().numpy().astype(int)
+    # Count class instances
+    class_counts = Counter(classes)
+    total_instances = sum(class_counts.values())
+
+    
+    # Color map per class
+    unique_classes = np.unique(classes)
+    color_map = {cls: plt.cm.tab10(i % 10) for i, cls in enumerate(unique_classes)}
+
+    # Plotting
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.imshow(imgs)
+    ax.set_title("Detection Results")
+    ax.axis('off')
+
+    for i in range(len(classes)):
+        x, y, w, h = labels[i]
+        x = int(x * width)
+        y = int(y * height)
+        w = int(w * width)
+        h = int(h * height)
+        cls = int(classes[i])
+        color = color_map[cls]
+
+        # Top-left corner from center
+        x0 = x - w // 2
+        y0 = y - h // 2
+
+        # Draw box
+        rect = patches.Rectangle((x0, y0), w, h, linewidth=1, edgecolor=color, facecolor='none')
+        ax.add_patch(rect)
+
+        # Draw label
+        ax.text(
+            x,
+            y0 - 5,
+            f"{class_names[cls]}",
+            color=color,
+            fontsize=8,
+            ha='center',
+            bbox=dict(facecolor='white', edgecolor='none', alpha=0.6, boxstyle='round,pad=0.2')
+        )
+    
+    # Use st.pyplot() to display the Matplotlib figure
+    st.pyplot(fig)
+    st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
+    st.subheader("📊 Analysis Results")
+    st.write(f"**Total Instances Detected:** {total_instances}")
+    cols = st.columns(2)
+    for i, cls in enumerate(sorted(class_counts.keys())):
+        count = class_counts[cls]
+        percent = (count / total_instances) * 100
+        
+        # Using columns to display counts nicely
+        with cols[i % 2]:
+            st.info(f"**{class_names[cls]}:** {count} instances ({percent:.2f}%)")
+    st.markdown("</div>", unsafe_allow_html=True) # Close the container
+
 
 # --- Main Page Content ---
 if page_selection == "🏠 Home":
@@ -129,94 +227,27 @@ if page_selection == "🏠 Home":
             img_file_buffer = st.camera_input("Take a picture")
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
-                st.image(image_data, caption="Captured Image", use_column_width=True)
+                # st.image(image_data, caption="Captured Image", use_column_width=True)
 
     with col2:
         st.subheader("📤 Output")
         
-        # --- Prediction Function using the YOLO model ---
-        def predict_reflection(image_data):
-            # Convert the image data from bytes to a format YOLO can use (e.g., NumPy array)
-            image = Image.open(io.BytesIO(image_data))
-            
-            with st.spinner("Analyzing corn reflection patterns..."):
-                # Perform inference with the YOLO model
-                results = yolo_model(image)
-                
-            # Process the results from YOLO.
-            predictions = results[0].boxes
-            
-            if len(predictions) > 0:
-                # Assuming your model is trained to classify corn quality
-                first_prediction = predictions[0]
-                confidence = first_prediction.conf.item() * 100
-                class_id = int(first_prediction.cls.item())
-                
-                # Map the class ID to a meaningful label
-                # You must define your own class names list based on your model's training
-                class_names = {
-                    0: 'High Quality',
-                    1: 'Medium Quality',
-                    2: 'Low Quality',
-                }
-                
-                quality = class_names.get(class_id, "Unknown Quality")
-
-                if quality == 'High Quality':
-                    return {
-                        'type': 'High Quality', 
-                        'confidence': confidence, 
-                        'description': 'Excellent surface reflection, optimal moisture content', 
-                        'color': 'green'
-                    }
-                elif quality == 'Medium Quality':
-                    return {
-                        'type': 'Medium Quality', 
-                        'confidence': confidence, 
-                        'description': 'Good reflection quality, slightly elevated moisture', 
-                        'color': 'yellow'
-                    }
-                else:
-                    return {
-                        'type': 'Standard Quality', 
-                        'confidence': confidence, 
-                        'description': 'Acceptable reflection, normal moisture levels', 
-                        'color': 'orange'
-                    }
-            else:
-                return {
-                    'type': 'No Corn Detected', 
-                    'confidence': 0, 
-                    'description': 'Please upload a clear image of corn.', 
-                    'color': 'gray'
-                }
-        
         if image_data:
             if st.button("🔮 Predict Corn Reflection"):
-                result = predict_reflection(image_data)
-                
-                color_map = {
-                    'green': 'rgba(102, 255, 102, 0.9)',
-                    'yellow': 'rgba(255, 255, 102, 0.9)',
-                    'orange': 'rgba(255, 178, 102, 0.9)',
-                    'gray': 'rgba(200, 200, 200, 0.9)'
-                }
-                
-                st.markdown(f"""
-                <div style="
-                    background: {color_map.get(result['color'], 'rgba(255, 255, 255, 0.9)')};
-                    border-radius: 12px;
-                    padding: 20px;
-                    text-align: center;
-                    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-                ">
-                    <h3 style="color: #333; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">🌽 Prediction Results</h3>
-                    <div style="color: #333; font-size: 1.25rem; font-weight: bold;">{result['type']}</div>
-                    <div style="color: #555; font-size: 1rem; margin-top: 5px;">{result['description']}</div>
-                    <div style="color: #777; font-size: 0.875rem; margin-top: 10px;">Confidence: {result['confidence']:.2f}%</div>
-                    <div style="color: #555; font-size: 0.75rem; margin-top: 15px;">Analysis completed successfully</div>
-                </div>
-                """, unsafe_allow_html=True)
+                with st.spinner("Analyzing corn reflection patterns..."):
+                    try:
+
+                        
+                        # Convert the image data from bytes to a PIL Image
+                        image = Image.open(io.BytesIO(image_data))
+                        
+                        # Perform inference with the YOLO model
+                        results = yolo_model.predict(source=image)
+                        
+                        plot_yolo_result_image_and_analyze(image_data, results)
+
+                    except Exception as e:
+                        st.error(f"An error occurred during prediction: {e}")
         else:
             st.markdown("""
             <div style="
@@ -236,9 +267,7 @@ if page_selection == "🏠 Home":
             """, unsafe_allow_html=True)
 
 # --- Details Page and About Page remain the same ---
-
 elif page_selection == "📊 Details":
-    # ... your existing code for the Details page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>📊 System Details</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -291,15 +320,14 @@ elif page_selection == "📊 Details":
 
 # --- About Page ---
 elif page_selection == "ℹ️ About":
-    # ... your existing code for the About page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>ℹ️ About CoR9</h1>", unsafe_allow_html=True)
     
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>🎯 Project Overview</h3>", unsafe_allow_html=True)
     st.write("""
-    CoR9 (Corn Reflection 9th Generation) is an advanced AI-powered system designed to analyze and predict 
-    corn quality through reflection analysis. Using state-of-the-art computer vision and deep learning 
-    techniques, our system can accurately assess corn kernels' quality, moisture content, and maturity 
+    CoR9 (Corn Reflection 9th Generation) is an advanced AI-powered system designed to analyze and predict
+    corn quality through reflection analysis. Using state-of-the-art computer vision and deep learning
+    techniques, our system can accurately assess corn kernels' quality, moisture content, and maturity
     levels in real-time.
     """)
     st.markdown("</div>", unsafe_allow_html=True)
@@ -326,7 +354,7 @@ elif page_selection == "ℹ️ About":
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>📞 Contact & Support</h3>", unsafe_allow_html=True)
     st.write("""
-    For technical support or questions about CoR9, please contact our development team. 
+    For technical support or questions about CoR9, please contact our development team.
     We're continuously improving the system and welcome your feedback.
     """)
     st.markdown("</div>", unsafe_allow_html=True)
