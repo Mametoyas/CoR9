@@ -8,6 +8,8 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from collections import Counter
+import warnings
+warnings.filterwarnings("ignore")
 
 # Import the YOLO library
 from ultralytics import YOLO
