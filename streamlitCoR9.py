@@ -33,9 +33,7 @@ css_content = """
 
     /* Main body and app container */
     body {
-        background-image:  url("https://www.google.com/url?sa=i&url=https%3A%2F%2F
-        www.pexels.com%2Fsearch%2Fnight%2520lights%2F&psig=AOvVaw0YoTHpVdijMfpx_VAQPB5h&ust=
-        1755380218668000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCLD-1YXjjY8DFQAAAAAdAAAAABAE");
+        background-image:  url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         background-size: cover;
     }
     .stApp {
