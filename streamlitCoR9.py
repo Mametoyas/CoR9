@@ -202,8 +202,6 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     # Use st.pyplot() to display the Matplotlib figure
     if mode != "🎥 Webcam":
         st.markdown('<div class="space1"></div>', unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="space2"></div>', unsafe_allow_html=True)
     st.pyplot(fig)
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
@@ -249,6 +247,7 @@ if page_selection == "🏠 Home":
 
         elif mode == "🎥 Webcam":
             img_file_buffer = st.camera_input("Take a picture")
+            st.markdown('<div class="space2"></div>', unsafe_allow_html=True)
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
                 # st.image(image_data, caption="Captured Image", use_column_width=True)
