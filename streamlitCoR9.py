@@ -379,5 +379,6 @@ elif page_selection == "ℹ️ About":
     st.markdown("<h3 style='font-weight:bold;'>📞 Contact & Support</h3>", unsafe_allow_html=True)
     st.write("""GitHub: https://github.com/Mametoyas/CoR9""")
     st.write("""Email: Chakkaphan.m@kkumail.com""")
+    st.write("""PromptPay: 0986452734""")
     st.markdown("</div>", unsafe_allow_html=True)
 
