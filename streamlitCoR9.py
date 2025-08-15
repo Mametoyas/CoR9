@@ -33,7 +33,7 @@ css_content = """
 
     /* Main body and app container */
     body {
-        background-image:  url("https://drive.google.com/file/d/1S4JGid8283Zcn7GgAU2PBbKFLpnXhNnh/view?usp=sharing")
+        background-image:  url("https://drive.google.com/file/d/1S4JGid8283Zcn7GgAU2PBbKFLpnXhNnh/view?usp=sharing");
         background-size: cover;
     }
     .stApp {
