@@ -33,12 +33,7 @@ css_content = """
 
     /* Main body and app container */
     body {
-        background: linear-gradient(
-            135deg,
-            rgba(188, 212, 237, 0.7) 0%,
-            rgba(232, 228, 255, 0.7) 100%
-        ), url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
-        filter: blur(5px);
+        background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         background-size: cover;
     }
     .stApp {
