@@ -308,8 +308,7 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>🌽 Corn Reflection Analysis</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Detection Types:**
-            - Object Bounding Boxes detection
+        - **Detection Types:** Object Bounding Boxes detection
         - **Classes:**
             ซัง, ราขาว, เมล็ดคลุกยา, เมล็ดดี, เมล็ดเน่า, เมล็ดน้ำผึ้ง, แมลงทำลาย
         """)
