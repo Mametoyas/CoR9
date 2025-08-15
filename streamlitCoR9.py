@@ -37,27 +37,39 @@ css_content = """
         background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         background-size: cover;
     }
-
-    /* Target the Streamlit main content area and blur it */
-    .stApp > header {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-    }
-    .st-emotion-cache-10o5j50 { /* This is a common class for the main container */
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 40px;
-    }
-
-    /* Ensure the sidebar also has the blur effect */
-    .sidebar .sidebar-content {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
+    body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            backdrop-filter: blur(100px);
+            background-color: rgba(0, 0, 0, 0.0);
+            z-index: 0;
+        }
+    .stApp {
+        background: none;
     }
 
-    /* Other styles remain the same */
-    .stButton > button {
+    /* Glassmorphism effect for main containers and sidebar */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
+        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 16px; /* Slightly more rounded corners */
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    .stApp {
+        background: none;
+    }
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+        background-color: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
@@ -66,21 +78,28 @@ css_content = """
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
-    .stButton > button:hover {
+    .stButton>button:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
-    .stTextInput > div > div > input, .stFileUploader > div > button, .stSelectbox > div > div {
+    .stTextInput>div>div>input, .stFileUploader>div>button, .stSelectbox>div>div {
         border-radius: 12px;
         border: 2px solid #667eea;
         background: rgba(255, 255, 255, 0.8);
     }
-    .analysis-container {
-        background-color: #ffffff;
-        border-radius: 16px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    .st-emotion-cache-10o5j50 { /* Main content glass effect */
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    }
+    .sidebar .sidebar-content {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+    }
+    .reportview-container .main .block-container{
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 """
 with open("style.css", "w") as f:
