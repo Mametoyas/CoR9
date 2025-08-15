@@ -119,14 +119,15 @@ st.sidebar.info("System Status: **AI Model Ready**")
 def plot_yolo_result_image_and_analyze(image_data, results):
     # Class names (YOLO ID → Name)
     class_names = {
-        1: 'Good',
-        5: 'Sung',
-        4: 'Insect',
-        3: 'Bad',
-        2: 'Honey',
-        0: 'Clookya',
-        6: 'Rakhaw'
+        1: 'เมล็ดดี',
+        5: 'ซัง',
+        4: 'แมลงทำลาย',
+        3: 'เมล็ดเน่า',
+        2: 'เมล็ดน้ำผึ้ง',
+        0: 'เมล็ดคลุกยา',
+        6: 'ราขาว'
     }
+                # ซัง, ราขาว, เมล็ดคลุกยา, เมล็ดดี, เมล็ดเน่า, เมล็ดน้ำผึ้ง, แมลงทำลาย
     # Convert image data to a format cv2 can read
     file_bytes = np.asarray(bytearray(image_data), dtype=np.uint8)
     img = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
