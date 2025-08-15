@@ -220,21 +220,22 @@ if page_selection == "🏠 Home":
         horizontal=True
     )
     
-    col1, col2 = st.columns(2)
+    col1, col3 ,col2= st.columns([5,5,10])
 
     with col1:
         st.subheader("📤 Input")
         image_data = None
 
         if mode == "📷 Image Upload":
-            uploaded_file = st.file_uploader(
-                "Upload a corn image:",
-                type=["jpg", "jpeg", "png", "webp"],
-                help="Click to upload or drag and drop your corn image here."
-            )
-            if uploaded_file is not None:
-                image_data = uploaded_file.getvalue()
-                st.image(image_data, caption="Corn Image Preview", use_container_width=True)
+            with col3:
+                uploaded_file = st.file_uploader(
+                    "Upload a corn image:",
+                    type=["jpg", "jpeg", "png", "webp"],
+                    help="Click to upload or drag and drop your corn image here."
+                )
+                if uploaded_file is not None:
+                    image_data = uploaded_file.getvalue()
+                    st.image(image_data, caption="Corn Image Preview", use_container_width=True)
 
         elif mode == "🎥 Webcam":
             img_file_buffer = st.camera_input("Take a picture")
