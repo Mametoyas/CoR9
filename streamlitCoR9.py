@@ -136,9 +136,7 @@ def plot_yolo_result_image_and_analyze(image_data, results):
 
     # --- Display analysis in a Streamlit container ---
     # New container with a white background for the analysis text
-    st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
-    st.subheader("📊 Analysis Results")
-    st.write(f"**Total Instances Detected:** {total_instances}")
+
     cols = st.columns(2)
     
     for i, cls in enumerate(sorted(class_counts.keys())):
@@ -190,6 +188,9 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     
     # Use st.pyplot() to display the Matplotlib figure
     st.pyplot(fig)
+    st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
+    st.subheader("📊 Analysis Results")
+    st.write(f"**Total Instances Detected:** {total_instances}")
 
 
 # --- Main Page Content ---
@@ -232,10 +233,7 @@ if page_selection == "🏠 Home":
             if st.button("🔮 Predict Corn Reflection"):
                 with st.spinner("Analyzing corn reflection patterns..."):
                     try:
-                        # Display the input image first
-                        st.subheader("Input Image")
-                        st.image(image_data, caption="Image to be analyzed", use_column_width=True)
-                        st.markdown("---")
+
                         
                         # Convert the image data from bytes to a PIL Image
                         image = Image.open(io.BytesIO(image_data))
