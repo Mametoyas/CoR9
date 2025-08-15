@@ -300,9 +300,9 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>📈 Performance Metrics</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Precision:** 94.2%
-        - **Recall:** 96.1%
-        - **F1-Score:** 95.1%
+        - **Precision:** 96.18%
+        - **Recall:** 94.15%
+        - **F1-Score:** 95.15%
         - **Processing Speed:** Real-time capable
         """)
         st.markdown("</div>", unsafe_allow_html=True)
@@ -358,3 +358,4 @@ elif page_selection == "ℹ️ About":
     We're continuously improving the system and welcome your feedback.
     """)
     st.markdown("</div>", unsafe_allow_html=True)
+
