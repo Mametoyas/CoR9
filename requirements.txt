@@ -4,6 +4,4 @@ ultralytics
 torch
 torchvision
 opencv-python
-libgl1-mesa-glx
-libgdk-pixbuf2.0-0
-libsm6
+
