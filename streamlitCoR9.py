@@ -33,6 +33,8 @@ css_content = """
     body {
         background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
         background-attachment: fixed;
+        background-image: url(CoR9_BG.jpg); /* Path ------------------------------*/
+        backdrop-filter: blur(90px); /* 10 */
     }
     .stApp {
         background: none;
@@ -41,8 +43,7 @@ css_content = """
     /* Glassmorphism effect for main containers and sidebar */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
         background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
-        background-image: url(CoR9_BG.jpg); /* Path ------------------------------*/
-        backdrop-filter: blur(90px); /* 10 */
+        backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.7);
         border-radius: 16px; /* Slightly more rounded corners */
