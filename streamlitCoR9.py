@@ -102,7 +102,7 @@ css_content = """
         padding-bottom: 2rem;
     }
     .space {
-    margin-top: 30px;  /* adjust as needed */
+    margin-top: 100px;  /* adjust as needed */
 }
 """
 with open("style.css", "w") as f:
