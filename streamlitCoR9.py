@@ -275,10 +275,10 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>🤖 AI Model Information</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Model:** YOLOv8n (or your custom model)
+        - **Model:** YOLOv11m 
         - **Architecture:** YOLO (You Only Look Once)
-        - **Training Data:** 10,000+ corn reflection images
-        - **Accuracy:** 95.7% (This is a placeholder, use your model's actual accuracy)
+        - **Training Data:** 64 corn reflection images
+        - **Accuracy:** 94.01% 
         - **Processing Time:** ~1-2 seconds per image (Depends on hardware)
         """)
         st.markdown("</div>", unsafe_allow_html=True)
