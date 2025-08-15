@@ -227,9 +227,11 @@ if page_selection == "🏠 Home":
                         
                         # Perform inference with the YOLO model
                         results = yolo_model.predict(source=image)
-                        plot_yolo_result_image_and_analyze(image_data, results)
                         
+                        plot_yolo_result_image_and_analyze(image_data, results)
 
+                    except Exception as e:
+                        st.error(f"An error occurred during prediction: {e}")
         else:
             st.markdown("""
             <div style="
