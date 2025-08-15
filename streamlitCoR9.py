@@ -194,6 +194,7 @@ def plot_yolo_result_image_and_analyze(image_data, results):
         )
     
     # Use st.pyplot() to display the Matplotlib figure
+    st.write()
     st.pyplot(fig)
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
@@ -227,7 +228,7 @@ if page_selection == "🏠 Home":
         image_data = None
 
         if mode == "📷 Image Upload":
-            with col3:
+            # with col3:
                 uploaded_file = st.file_uploader(
                     "Upload a corn image:",
                     type=["jpg", "jpeg", "png", "webp"],
