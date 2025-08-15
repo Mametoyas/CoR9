@@ -31,7 +31,8 @@ def local_css(file_name):
 css_content = """
     /* Main body and app container */
     body {
-        background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
+        background-image: url(CoR9_BG.jpg); /* Path ------------------------------*/
+        backdrop-filter: blur(90px); /* 10 */
         background-attachment: fixed;
     }
     .stApp {
