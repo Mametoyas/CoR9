@@ -122,12 +122,12 @@ st.sidebar.info("System Status: **AI Model Ready**")
 def plot_yolo_result_image_and_analyze(image_data, results):
     # Class names (YOLO ID → Name)
     class_names = {
-        1: 'ดี',       # Good
-        5: 'สุก',      # Sung
-        4: 'แมลง',     # Insect
-        3: 'เสีย',     # Bad
-        2: 'น้ำผึ้ง',   # Honey
-        0: 'คลุกคล้า', # Clookya (I assume this is a transliteration)
+        1: 'เมล็ดดี',       # Good
+        5: 'ซัง',      # Sung
+        4: 'แมลงทำลาย',     # Insect
+        3: 'เมล็ดเน่า',     # Bad
+        2: 'เมล็ดน้ำผึ้ง',   # Honey
+        0: 'คลุกยา', # Clookya (I assume this is a transliteration)
         6: 'ราขาว'    # Rakhaw (White mold)
     }
     font_path = 'Sarabun-Regular.ttf'  # Make sure this font file is in the same directory as your script
