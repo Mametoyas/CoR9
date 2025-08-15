@@ -73,6 +73,12 @@ css_content = """
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+    .analysis-container {
+        background-color: #ffffff; /* White color */
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+    }
 """
 with open("style.css", "w") as f:
     f.write(css_content)
@@ -127,18 +133,20 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     total_instances = sum(class_counts.values())
 
     # --- Display analysis in a Streamlit container ---
-    with st.container():
-        st.subheader("📊 Analysis Results")
-        st.write(f"**Total Instances Detected:** {total_instances}")
-        cols = st.columns(2)
+    # New container with a white background for the analysis text
+    st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
+    st.subheader("📊 Analysis Results")
+    st.write(f"**Total Instances Detected:** {total_instances}")
+    cols = st.columns(2)
+    
+    for i, cls in enumerate(sorted(class_counts.keys())):
+        count = class_counts[cls]
+        percent = (count / total_instances) * 100
         
-        for i, cls in enumerate(sorted(class_counts.keys())):
-            count = class_counts[cls]
-            percent = (count / total_instances) * 100
-            
-            # Using columns to display counts nicely
-            with cols[i % 2]:
-                st.info(f"**{class_names[cls]}:** {count} instances ({percent:.2f}%)")
+        # Using columns to display counts nicely
+        with cols[i % 2]:
+            st.info(f"**{class_names[cls]}:** {count} instances ({percent:.2f}%)")
+    st.markdown("</div>", unsafe_allow_html=True) # Close the container
     
     # Color map per class
     unique_classes = np.unique(classes)
@@ -222,6 +230,11 @@ if page_selection == "🏠 Home":
             if st.button("🔮 Predict Corn Reflection"):
                 with st.spinner("Analyzing corn reflection patterns..."):
                     try:
+                        # Display the input image first
+                        st.subheader("Input Image")
+                        st.image(image_data, caption="Image to be analyzed", use_column_width=True)
+                        st.markdown("---")
+                        
                         # Convert the image data from bytes to a PIL Image
                         image = Image.open(io.BytesIO(image_data))
                         
@@ -251,9 +264,7 @@ if page_selection == "🏠 Home":
             """, unsafe_allow_html=True)
 
 # --- Details Page and About Page remain the same ---
-
 elif page_selection == "📊 Details":
-    # ... your existing code for the Details page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>📊 System Details</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -306,7 +317,6 @@ elif page_selection == "📊 Details":
 
 # --- About Page ---
 elif page_selection == "ℹ️ About":
-    # ... your existing code for the About page ...
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>ℹ️ About CoR9</h1>", unsafe_allow_html=True)
     
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
