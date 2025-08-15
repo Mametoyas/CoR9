@@ -34,7 +34,6 @@ css_content = """
     /* Main body and app container */
     body {
         background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
-        filter: blur();
         background-size: cover;
     }
     .stApp {
