@@ -33,7 +33,7 @@ css_content = """
 
     /* Main body and app container */
     body {
-        background: url("https://github.com/Mametoyas/CoR9/blob/main/CoR9_BG.jpg");
+        background-image: url("https://github.com/Mametoyas/CoR9/blob/main/CoR9_BG.jpg");
         background-size: cover;
     }
     .stApp {
