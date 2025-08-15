@@ -38,7 +38,7 @@ css_content = """
         background-size: cover;
     }
     .stApp > header {
-        background: rgba(255, 255, 255, 0.2);
+        background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         backdrop-filter: blur(10px);
     }
 
