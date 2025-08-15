@@ -33,8 +33,13 @@ css_content = """
 
     /* Main body and app container */
     body {
-        background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
-        background-attachment: fixed;
+        background: linear-gradient(
+            135deg,
+            rgba(188, 212, 237, 0.7) 0%,
+            rgba(232, 228, 255, 0.7) 100%
+        ),
+        url("https://raw.githubusercontent.com/Mametoyas/CoR9/blob/main/CoR9_BG.jpg") no-repeat center center fixed;
+        background-size: cover;
     }
     .stApp {
         background: none;
