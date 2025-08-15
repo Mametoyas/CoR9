@@ -30,14 +30,16 @@ def local_css(file_name):
 
 # Create a temporary CSS file to apply custom styles from your HTML
 css_content = """
+    
 
     /* Main body and app container */
     body {
         background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         background-size: cover;
     }
-    .stApp {
-        background: none;
+    .stApp > header {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
 
     /* Glassmorphism effect for main containers and sidebar */
