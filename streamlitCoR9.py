@@ -48,75 +48,48 @@ css_content = """
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
-    
-    /* Main content container */
-    .st-emotion-cache-10o5j50 {
-        background: rgba(255, 255, 255, 0.85); /* A bit less transparent */
-        border-radius: 20px;
-        padding: 50px;
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    .stApp {
+        background: none;
     }
-
-    /* Buttons */
-    .stButton > button {
-        background: linear-gradient(45deg, #d8b4fe 0%, #764ba2 100%);
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+        background-color: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .stButton>button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
         border-radius: 25px;
         font-weight: bold;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(120, 80, 200, 0.4);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
-    .stButton > button:hover {
+    .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(120, 80, 200, 0.6);
-        background: linear-gradient(45deg, #e0cffc 0%, #8a64b9 100%);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
-
-    /* Input fields (file uploader, text input) */
-    .stTextInput > div > div > input, .stFileUploader > div > button, .stSelectbox > div > div {
+    .stTextInput>div>div>input, .stFileUploader>div>button, .stSelectbox>div>div {
         border-radius: 12px;
-        border: 1.5px solid #d8b4fe;
-        background: rgba(255, 255, 255, 0.85);
-        color: #333;
+        border: 2px solid #667eea;
+        background: rgba(255, 255, 255, 0.8);
     }
-
-    /* Info boxes for analysis results */
-    .st-emotion-cache-14j989e {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-left: 5px solid #d8b4fe;
-        color: #333;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    .st-emotion-cache-10o5j50 { /* Main content glass effect */
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
     }
-
-    /* Headers */
-    h1, h2, h3 {
-        color: #4a287c;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    .sidebar .sidebar-content {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
     }
-    
-    /* Centered header on the main page */
-    .st-emotion-cache-10e97h9 {
-        color: white;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    .reportview-container .main .block-container{
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
-    
-    /* Radio buttons */
-    .st-emotion-cache-10a4v9k {
-        background-color: transparent;
-        color: white;
-    }
-
-    /* Analysis container with white background */
-    .analysis-container {
-        background-color: #ffffff;
-        border-radius: 16px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-"""
 """
 with open("style.css", "w") as f:
     f.write(css_content)
