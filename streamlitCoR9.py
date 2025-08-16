@@ -84,7 +84,7 @@ css_content = """
         padding: 10px;
     }
     /* Sidebar specific styles */
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+    .st-emotion-cache-1lqf7hx e1v5e29v0, .st-emotion-cache-155jwzh {
         background-color: #000000;
         color: #ffffff; /* Sets all text inside the sidebar to white */
         backdrop-filter: blur(10px);
