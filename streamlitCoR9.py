@@ -48,6 +48,20 @@ css_content = """
     .stApp {
         background: none;
     }
+    body, .st-emotion-cache-j7qwjs, .st-emotion-cache-1kyx5z6, .st-emotion-cache-10a4v9k > div > label > div > p, h1, h2, h3, h4, h5, h6, p, li, div, span, a {
+    color: white !important;
+    }
+    
+    /* This is a general rule for all text that should be white, including in the sidebar and main body. */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+        color: white; /* Applies to text within these containers */
+    }
+    
+    /* Specifically for the 'System Status' info box and its content */
+    .st-emotion-cache-14j989e {
+        color: white !important; /* Force text to be white for this info box */
+        border-left-color: white !important; /* Change the border color too */
+    }
 
     /* Glassmorphism effect for main containers and sidebar */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
