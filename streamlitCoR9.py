@@ -119,7 +119,7 @@ css_content = """
         box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
     }
     .sidebar .sidebar-content {
-        background: rgba(255, 255, 255, 0.25);
+        background: rgba(0, 0, 0, 0.25);
         backdrop-filter: blur(10px);
     }
     .reportview-container .main .block-container{
