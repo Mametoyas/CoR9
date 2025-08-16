@@ -111,7 +111,6 @@ css_content = """
         margin-top: 26px;
     }
 """
-"""
 with open("style.css", "w") as f:
     f.write(css_content)
 local_css("style.css")
