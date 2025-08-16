@@ -30,31 +30,26 @@ def local_css(file_name):
 
 # Create a temporary CSS file to apply custom styles from your HTML
 css_content = """
-    
-
     /* Main body and app container */
     body {
         background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
         background-size: cover;
     }
     body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            backdrop-filter: blur(100px);
-            background-color: rgba(0, 0, 0, 0.0);
-            z-index: 0;
-        }
+        content: "";
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(100px);
+        background-color: rgba(0, 0, 0, 0.0);
+        z-index: 0;
+    }
     .stApp {
         background: none;
     }
+    
+    /* Global text color for all elements */
     body, .st-emotion-cache-j7qwjs, .st-emotion-cache-1kyx5z6, .st-emotion-cache-10a4v9k > div > label > div > p, h1, h2, h3, h4, h5, h6, p, li, div, span, a {
     color: white !important;
-    }
-    
-    /* This is a general rule for all text that should be white, including in the sidebar and main body. */
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        color: white; /* Applies to text within these containers */
     }
     
     /* Specifically for the 'System Status' info box and its content */
@@ -63,28 +58,8 @@ css_content = """
         border-left-color: white !important; /* Change the border color too */
     }
 
-    /* Glassmorphism effect for main containers and sidebar */
+    /* Consolidated Sidebar Styling: Black background with white text and a clean glassmorphism effect */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
-        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: 16px; /* Slightly more rounded corners */
-        padding: 20px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-    .stApp {
-        background: none;
-    }
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        background-color: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-        padding: 10px;
-    }
-    /* Sidebar specific styles */
-    .st-emotion-cache-1lqf7hx e1v5e29v0, .st-emotion-cache-155jwzh {
         background-color: #000000;
         color: #ffffff; /* Sets all text inside the sidebar to white */
         backdrop-filter: blur(10px);
@@ -94,6 +69,8 @@ css_content = """
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
+    
+    /* Buttons */
     .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -107,34 +84,33 @@ css_content = """
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
+    
+    /* Input fields */
     .stTextInput>div>div>input, .stFileUploader>div>button, .stSelectbox>div>div {
         border-radius: 12px;
         border: 2px solid #667eea;
         background: rgba(255, 255, 255, 0.8);
     }
-    .st-emotion-cache-10o5j50 { /* Main content glass effect */
+    
+    /* Main content glass effect */
+    .st-emotion-cache-10o5j50 {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 12px;
         padding: 40px;
         box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
     }
-    .sidebar .sidebar-content {
-        background: rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(10px);
-    }
+    
     .reportview-container .main .block-container{
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
     .space1 {
-    margin-top: 112px;  /* adjust as needed */
+        margin-top: 112px;
     }
     .space2 {
-    margin-top: 26px;  /* adjust as needed */
+        margin-top: 26px;
     }
-    .st-emotion-cache-12fmw3r .st-emotion-cache-18ni7ap .st-emotion-cache-10a4v9k > div > label > div > p {
-    color: white !important;
-}
+"""
 """
 with open("style.css", "w") as f:
     f.write(css_content)
