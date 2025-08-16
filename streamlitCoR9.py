@@ -107,6 +107,9 @@ css_content = """
     .space2 {
     margin-top: 26px;  /* adjust as needed */
     }
+    .st-emotion-cache-12fmw3r .st-emotion-cache-18ni7ap .st-emotion-cache-10a4v9k > div > label > div > p {
+    color: white !important;
+}
 """
 with open("style.css", "w") as f:
     f.write(css_content)
