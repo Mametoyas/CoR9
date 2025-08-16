@@ -57,6 +57,43 @@ css_content = """
         color: white !important; /* Force text to be white for this info box */
         border-left-color: white !important; /* Change the border color too */
     }
+    /* Specifically for the 'System Status' info box and its content */
+    .st-emotion-cache-14j989e {
+        color: white !important;
+        border-left-color: white !important;
+    }
+    
+    /* NEW: This targets the specific container you want to make black */
+    .st-emotion-cache-vgzhz4 {
+        background-color: #000000;
+    }
+    
+    /* NEW: This targets the sidebar and its content to set a dark color */
+    .st-emotion-cache-1lqf7hx {
+        background-color: #282828;
+        color: #ffffff;
+    }
+    .st-emotion-cache-1lqf7hx h1,
+    .st-emotion-cache-1lqf7hx .st-emotion-cache-1kyx5z6,
+    .st-emotion-cache-1lqf7hx .st-emotion-cache-10a4v9k > div > label > div > p {
+        color: #ffffff;
+    }
+
+    /* Consolidated Sidebar Styling: Black background with white text and a clean glassmorphism effect */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+        background-color: #000000;
+        color: #ffffff;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar .sidebar-content {
+        background-color: #000000;
+        color: #ffffff;
+    }
 
     /* Consolidated Sidebar Styling: Black background with white text and a clean glassmorphism effect */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
@@ -111,7 +148,7 @@ css_content = """
         margin-top: 26px;
     }
     .st-emotion-cache-vgzhz4 {
-    background-color: #000000;
+    background-color: #282828;
 }
 """
 with open("style.css", "w") as f:
