@@ -110,6 +110,9 @@ css_content = """
     .space2 {
         margin-top: 26px;
     }
+    .st-emotion-cache-vgzhz4 {
+    background-color: #000000;
+}
 """
 with open("style.css", "w") as f:
     f.write(css_content)
