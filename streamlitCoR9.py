@@ -83,22 +83,16 @@ css_content = """
         border-radius: 10px;
         padding: 10px;
     }
-        /* Sidebar styles */
+    /* Sidebar specific styles */
     .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        /* This is the sidebar container */
-        background-color: var(--sidebar-bg-color); 
-        color: var(--text-color);
+        background-color: #000000;
+        color: #ffffff; /* Sets all text inside the sidebar to white */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.7);
         border-radius: 16px;
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-    .sidebar .sidebar-content {
-        /* This rule ensures the inner content also has a black background */
-        background-color: var(--sidebar-bg-color);
-        color: var(--text-color);
     }
     .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
