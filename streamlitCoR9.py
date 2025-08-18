@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import random
+import matplotlib.font_manager as fm
 from PIL import Image
 import io
 import numpy as np
@@ -31,33 +32,82 @@ def local_css(file_name):
 css_content = """
     /* Main body and app container */
     body {
-        background: linear-gradient(135deg, #bcd4ed 0%, ##e8e4ff 100%);
-        background-attachment: fixed;
+        background: url("https://images.pexels.com/photos/716656/pexels-photo-716656.jpeg");
+        background-size: cover;
+    }
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(100px);
+        background-color: rgba(0, 0, 0, 0.0);
+        z-index: 0;
     }
     .stApp {
         background: none;
     }
+    
+    /* Global text color for all elements */
+    body, .st-emotion-cache-j7qwjs, .st-emotion-cache-1kyx5z6, .st-emotion-cache-10a4v9k > div > label > div > p, h1, h2, h3, h4, h5, h6, p, li, div, span, a {
+    color: white !important;
+    }
+    
+    /* Specifically for the 'System Status' info box and its content */
+    .st-emotion-cache-14j989e {
+        color: white !important; /* Force text to be white for this info box */
+        border-left-color: white !important; /* Change the border color too */
+    }
+    /* Specifically for the 'System Status' info box and its content */
+    .st-emotion-cache-14j989e {
+        color: white !important;
+        border-left-color: white !important;
+    }
+    
+    /* NEW: This targets the specific container you want to make black */
+    .st-emotion-cache-vgzhz4 {
+        background-color: #000000;
+    }
+    
+    /* NEW: This targets the sidebar and its content to set a dark color */
+    .st-emotion-cache-1lqf7hx {
+        background-color: #282828;
+        color: #ffffff;
+    }
+    .st-emotion-cache-1lqf7hx h1,
+    .st-emotion-cache-1lqf7hx .st-emotion-cache-1kyx5z6,
+    .st-emotion-cache-1lqf7hx .st-emotion-cache-10a4v9k > div > label > div > p {
+        color: #ffffff;
+    }
 
-    /* Glassmorphism effect for main containers and sidebar */
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
-        background-color: rgba(255, 255, 255, 0.5); /* More transparent for a lighter glass look */
+    /* Consolidated Sidebar Styling: Black background with white text and a clean glassmorphism effect */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
+        background-color: #000000;
+        color: #ffffff;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.7);
-        border-radius: 16px; /* Slightly more rounded corners */
+        border-radius: 16px;
         padding: 20px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
-    .stApp {
-        background: none;
+    .sidebar .sidebar-content {
+        background-color: #000000;
+        color: #ffffff;
     }
-    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap {
-        background-color: rgba(255, 255, 255, 0.25);
+
+    /* Consolidated Sidebar Styling: Black background with white text and a clean glassmorphism effect */
+    .st-emotion-cache-12fmw3r, .st-emotion-cache-18ni7ap, .sidebar .sidebar-content {
+        background-color: #000000;
+        color: #ffffff; /* Sets all text inside the sidebar to white */
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-        padding: 10px;
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     }
+    
+    /* Buttons */
     .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -71,25 +121,35 @@ css_content = """
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
+    
+    /* Input fields */
     .stTextInput>div>div>input, .stFileUploader>div>button, .stSelectbox>div>div {
         border-radius: 12px;
         border: 2px solid #667eea;
         background: rgba(255, 255, 255, 0.8);
     }
-    .st-emotion-cache-10o5j50 { /* Main content glass effect */
+    
+    /* Main content glass effect */
+    .st-emotion-cache-10o5j50 {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 12px;
         padding: 40px;
         box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
     }
-    .sidebar .sidebar-content {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-    }
+    
     .reportview-container .main .block-container{
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+    .space1 {
+        margin-top: 112px;
+    }
+    .space2 {
+        margin-top: 26px;
+    }
+    .st-emotion-cache-vgzhz4 {
+    background-color: #282828;
+}
 """
 with open("style.css", "w") as f:
     f.write(css_content)
@@ -98,7 +158,9 @@ local_css("style.css")
 # --- Model Loading with Caching ---
 @st.cache_resource
 def load_yolo_model():
-    model = YOLO("best.pt")
+    # model = YOLO("best.pt")
+    model = YOLO("best2.pt")
+    
     return model
 
 # Load the model once at the start of the app.
@@ -119,14 +181,16 @@ st.sidebar.info("System Status: **AI Model Ready**")
 def plot_yolo_result_image_and_analyze(image_data, results):
     # Class names (YOLO ID → Name)
     class_names = {
-        1: 'Good',
-        5: 'Sung',
-        4: 'Insect',
-        3: 'Bad',
-        2: 'Honey',
-        0: 'Clookya',
-        6: 'Rakhaw'
+        1: 'เมล็ดดี',       # Good
+        5: 'ซัง',      # Sung
+        4: 'แมลงทำลาย',     # Insect
+        3: 'เมล็ดเน่า',     # Bad
+        2: 'เมล็ดน้ำผึ้ง',   # Honey
+        0: 'คลุกยา', # Clookya (I assume this is a transliteration)
+        6: 'ราขาว'    # Rakhaw (White mold)
     }
+    font_path = 'Sarabun-Regular.ttf'  # Make sure this font file is in the same directory as your script
+    font_prop = fm.FontProperties(fname=font_path)
     # Convert image data to a format cv2 can read
     file_bytes = np.asarray(bytearray(image_data), dtype=np.uint8)
     img = cv.imdecode(file_bytes, cv.IMREAD_COLOR)
@@ -149,7 +213,6 @@ def plot_yolo_result_image_and_analyze(image_data, results):
     # Plotting
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.imshow(imgs)
-    ax.set_title("Detection Results")
     ax.axis('off')
 
     for i in range(len(classes)):
@@ -176,11 +239,14 @@ def plot_yolo_result_image_and_analyze(image_data, results):
             f"{class_names[cls]}",
             color=color,
             fontsize=8,
+            fontproperties=font_prop,
             ha='center',
             bbox=dict(facecolor='white', edgecolor='none', alpha=0.6, boxstyle='round,pad=0.2')
         )
     
     # Use st.pyplot() to display the Matplotlib figure
+    if mode != "🎥 Webcam":
+        st.markdown('<div class="space1"></div>', unsafe_allow_html=True)
     st.pyplot(fig)
     st.markdown("<div class='analysis-container'>", unsafe_allow_html=True)
     st.subheader("📊 Analysis Results")
@@ -199,31 +265,31 @@ def plot_yolo_result_image_and_analyze(image_data, results):
 # --- Main Page Content ---
 if page_selection == "🏠 Home":
     st.markdown("<h1 style='text-align:center; color:#fff; font-size:2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>🌽 CoR9 Corn Reflection Prediction</h1>", unsafe_allow_html=True)
-    
-    st.markdown("<h2 style='text-align:center; color:#fff;'>Select Analysis Mode</h2>", unsafe_allow_html=True)
     mode = st.radio(
         "Choose a mode:",
         ("📷 Image Upload", "🎥 Webcam"),
         horizontal=True
     )
     
-    col1, col2 = st.columns(2)
+    col1, col2= st.columns(2)
 
     with col1:
         st.subheader("📤 Input")
         image_data = None
 
         if mode == "📷 Image Upload":
-            uploaded_file = st.file_uploader(
-                "Upload a corn image:",
-                type=["jpg", "jpeg", "png", "webp"],
-                help="Click to upload or drag and drop your corn image here."
-            )
-            if uploaded_file is not None:
-                image_data = uploaded_file.getvalue()
-                st.image(image_data, caption="Corn Image Preview", use_column_width=True)
+            # with col3:
+                uploaded_file = st.file_uploader(
+                    "Upload a corn image:",
+                    type=["jpg", "jpeg", "png", "webp"],
+                    help="Click to upload or drag and drop your corn image here."
+                )
+                if uploaded_file is not None:
+                    image_data = uploaded_file.getvalue()
+                    st.image(image_data, caption="Corn Image Preview", use_container_width=True)
 
         elif mode == "🎥 Webcam":
+            st.markdown('<div class="space2"></div>', unsafe_allow_html=True)
             img_file_buffer = st.camera_input("Take a picture")
             if img_file_buffer is not None:
                 image_data = img_file_buffer.getvalue()
@@ -248,23 +314,23 @@ if page_selection == "🏠 Home":
 
                     except Exception as e:
                         st.error(f"An error occurred during prediction: {e}")
-        else:
-            st.markdown("""
-            <div style="
-                border: 2px dashed #ccc;
-                border-radius: 12px;
-                padding: 40px;
-                text-align: center;
-                background: #f9f9f9;
-                color: #888;
-            ">
-                <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
-                <div>Prediction results will appear here</div>
-                <div style="font-size: 0.75rem; margin-top: 0.5rem;">
-                    Upload an image or use the webcam to see results.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+        # else:
+        #     st.markdown("""
+        #     <div style="
+        #         border: 2px dashed #ccc;
+        #         border-radius: 12px;
+        #         padding: 40px;
+        #         text-align: center;
+        #         background: #f9f9f9;
+        #         color: #888;
+        #     ">
+        #         <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
+        #         <div>Prediction results will appear here</div>
+        #         <div style="font-size: 0.75rem; margin-top: 0.5rem;">
+        #             Upload an image or use the webcam to see results.
+        #         </div>
+        #     </div>
+        #     """, unsafe_allow_html=True)
 
 # --- Details Page and About Page remain the same ---
 elif page_selection == "📊 Details":
@@ -275,10 +341,10 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>🤖 AI Model Information</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Model:** YOLOv8n (or your custom model)
+        - **Model:** YOLOv11m 
         - **Architecture:** YOLO (You Only Look Once)
-        - **Training Data:** 10,000+ corn reflection images
-        - **Accuracy:** 95.7% (This is a placeholder, use your model's actual accuracy)
+        - **Training Data:** 64 corn reflection images
+        - **Accuracy:** 94.01% 
         - **Processing Time:** ~1-2 seconds per image (Depends on hardware)
         """)
         st.markdown("</div>", unsafe_allow_html=True)
@@ -287,11 +353,9 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>🌽 Corn Reflection Analysis</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Detection Types:**
-            - Surface reflection quality
-            - Kernel moisture content
-            - Maturity level assessment
-            - Quality grading
+        - **Detection Types:** Object Bounding Boxes detection
+        - **Classes:**
+            ซัง, ราขาว, เมล็ดคลุกยา, เมล็ดดี, เมล็ดเน่า, เมล็ดน้ำผึ้ง, แมลงทำลาย
         """)
         st.markdown("</div>", unsafe_allow_html=True)
     
@@ -300,9 +364,9 @@ elif page_selection == "📊 Details":
         st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
         st.markdown("<h3 style='font-weight:bold;'>📈 Performance Metrics</h3>", unsafe_allow_html=True)
         st.write("""
-        - **Precision:** 94.2%
-        - **Recall:** 96.1%
-        - **F1-Score:** 95.1%
+        - **Precision:** 96.18%
+        - **Recall:** 94.15%
+        - **F1-Score:** 95.15%
         - **Processing Speed:** Real-time capable
         """)
         st.markdown("</div>", unsafe_allow_html=True)
@@ -325,36 +389,40 @@ elif page_selection == "ℹ️ About":
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>🎯 Project Overview</h3>", unsafe_allow_html=True)
     st.write("""
-    CoR9 (Corn Reflection 9th Generation) is an advanced AI-powered system designed to analyze and predict
-    corn quality through reflection analysis. Using state-of-the-art computer vision and deep learning
-    techniques, our system can accurately assess corn kernels' quality, moisture content, and maturity
-    levels in real-time.
+                  CoR9 มีวัตถุประสงค์หลักของการพัฒนาโมเดล คือการสร้างระบบตรวจจับและจำแนกประเภทเมล็ดข้าวโพดอย่างแม่นยำและมีประสิทธิภาพ 
+    โดยโมเดลจะสามารถแยกแยะเมล็ดข้าวโพดที่ถูกตรวจจับออกเป็นประเภทต่าง ๆ ได้อย่างอัตโนมัติ ซึ่งเป็นกระบวนการสำคัญในการติดตามคุณภาพ 
+    คัดแยกความหลากหลาย และประเมินมาตรฐานของผลผลิตทางการเกษตร การนำเทคโนโลยี AI มาใช้ในกระบวนการนี้ 
+    จะช่วยลดเวลาและขั้นตอนการทำงานเมื่อเทียบกับการตรวจสอบด้วยวิธีการแบบดั้งเดิม 
+    อีกทั้งยังสามารถลดความผิดพลาดที่มักเกิดจากการประเมินด้วยสายตาหรือการทำงานของบุคลากร 
+    ซึ่งเป็นปัญหาที่พบได้บ่อยในภาคการผลิต และการวิจัยด้านเกษตรกรรม 
     """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='font-weight:bold;'>🚀 Key Features</h3>", unsafe_allow_html=True)
-    st.markdown("""
-    - ✓ Real-time corn quality assessment
-    - ✓ Dual mode operation (Image & Video)
-    - ✓ High accuracy prediction (95.7%)
-    - ✓ User-friendly web interface
-    - ✓ Webcam integration for live analysis
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
-    st.write("""
-    - **Frontend:** Streamlit, Custom CSS
-    - **AI/ML:** YOLO (You Only Look Once), Computer Vision, Deep Learning
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("</div>", unsafe_allow_html=True)
     
+        st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-weight:bold;'>🚀 Key Features</h3>", unsafe_allow_html=True)
+        st.markdown("""
+        - ✓ Real-time corn quality assessment
+        - ✓ Dual mode operation (Image & Video)
+        - ✓ High accuracy prediction (95.7%)
+        - ✓ User-friendly web interface
+        - ✓ Webcam integration for live analysis
+        """)
+    with col2:
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+        st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-weight:bold;'>🛠️ Technology Stack</h3>", unsafe_allow_html=True)
+        st.write("""
+        - **Frontend:** Streamlit, Custom CSS
+        - **AI:** YOLO (You Only Look Once), Computer Vision, Deep Learning
+        """)
+    st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("<div class='mode-card'>", unsafe_allow_html=True)
     st.markdown("<h3 style='font-weight:bold;'>📞 Contact & Support</h3>", unsafe_allow_html=True)
-    st.write("""
-    For technical support or questions about CoR9, please contact our development team.
-    We're continuously improving the system and welcome your feedback.
-    """)
+    st.write("""GitHub: https://github.com/Mametoyas/CoR9""")
+    st.write("""Email: Chakkaphan.m@kkumail.com""")
+    st.write("""PromptPay: 0986452734""")
     st.markdown("</div>", unsafe_allow_html=True)
+
