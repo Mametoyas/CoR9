@@ -158,8 +158,8 @@ local_css("style.css")
 # --- Model Loading with Caching ---
 @st.cache_resource
 def load_yolo_model():
-    # model = YOLO("best.pt")
-    model = YOLO("best2.pt")
+    model = YOLO("best.pt")
+    # model = YOLO("best2.pt")
     
     return model
 
